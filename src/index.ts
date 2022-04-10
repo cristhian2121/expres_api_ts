@@ -13,7 +13,7 @@ app.use(express.json())
 const whiteList = ["localhost:80"]
 const options: CorsOptions = {
   origin: (origin, callback) => {
-    const isAllowed = whiteList.includes(origin as string)
+    const isAllowed = whiteList.includes(origin as string) || !origin
     isAllowed ? callback(null, true): callback(new Error())
   }
 }
