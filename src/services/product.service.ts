@@ -1,6 +1,5 @@
 import { IProductDTO, IProduct } from "@models/product.model";
-import Boom from "boom"
-
+import Boom from '@hapi/boom';
 export class ProductsService {
 
   products: IProduct[] = []

@@ -1,18 +1,17 @@
-import Boom from "boom";
 import { Request, Response, NextFunction } from "express"; "express"
+import { Boom } from "@hapi/boom"
 
 /**
- * Traking errors  
+ * Tracking errors  
  */
 export function logErrors(err: Error, req: Request, res: Response, next: NextFunction) {
-  console.log('logErrors: ', err);
+  console.log('logErrors: ');
   next(err)
 }
 
 export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
-  console.log('errorHandler: ', err);
   if(err) {
-    res.status(500).json({
+    return res.status(500).json({
       message: err.message,
       stack: err.stack
     })
@@ -26,8 +25,7 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
 export function boomErrorHandler(err: Boom, req: Request, res: Response, next: NextFunction) {
   if(err.isBoom) {
     const { output } = err
-    res.status(output.statusCode).json(output.payload)
+    return res.status(output.statusCode).json(output.payload)
   }
-
   next(err)
 }
