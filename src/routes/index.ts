@@ -10,7 +10,6 @@ export function routerApi(app: Express) {
   routerV1.use('/product', productsRouter)
   routerV1.use('/category', categoryRouter)
 
-
   // v2
 
   const routerV2 = Router()
