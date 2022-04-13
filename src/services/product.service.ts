@@ -1,11 +1,18 @@
 import { IProductDTO, IProduct } from "@models/product.model";
 import Boom from '@hapi/boom';
+import poolConnection from "../libs/postgres";
+import { Pool } from "pg";
 export class ProductsService {
 
   products: IProduct[] = []
+  pool: Pool;
 
   constructor(){
     this.generate();
+    this.pool = poolConnection
+    this.pool.on("error", (err) => {
+      console.log("Error in connection with pg ", err);
+    })
   }
 
   generate() {
@@ -30,12 +37,10 @@ export class ProductsService {
     return newProduct;
   }
 
-  find() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(this.products);
-      }, 1000);
-    })
+  async find() {
+    const query = "SELECT * FROM task"
+    const res = await this.pool.query(query)
+    return res.rows
   }
 
   async findOne(id: number) {
