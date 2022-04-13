@@ -2,7 +2,14 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-type Config = {[key: string]: string | number}
+type Config = {
+  env: string,
+  dbHost: string,
+  dbPort: string,
+  dbUser: string,
+  dbPassword: string,
+  dbName: string
+}
 
 export const config: Config = {
   env: process.env.NODE_ENV as string,

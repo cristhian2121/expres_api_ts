@@ -2,6 +2,8 @@ import { IProductDTO, IProduct } from "@models/product.model";
 import Boom from '@hapi/boom';
 import poolConnection from "../libs/postgres";
 import { Pool } from "pg";
+import { AppDataSource } from "../libs/typeORM";
+import { Products } from "../db/entities/product.entity";
 export class ProductsService {
 
   products: IProduct[] = []
@@ -38,9 +40,8 @@ export class ProductsService {
   }
 
   async find() {
-    const query = "SELECT * FROM task"
-    const res = await this.pool.query(query)
-    return res.rows
+    const res = await AppDataSource.manager.find(Products)
+    return res
   }
 
   async findOne(id: number) {

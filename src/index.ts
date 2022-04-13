@@ -3,6 +3,9 @@ import { boomErrorHandler, errorHandler, logErrors } from "./middlewares/error.h
 import { routerApi } from "./routes"
 import helmet from "helmet"
 import cors, { CorsOptions } from "cors"
+// config typeORM
+import "reflect-metadata"
+import { turnOnORM } from "./libs/typeORM"
 
 const app = express()
 const port = 3200
@@ -21,6 +24,9 @@ app.use(cors(options))
 
 // avaliable routers
 routerApi(app)
+
+// Initialize database
+turnOnORM()
 
 // middleware the order is important
 app.use(helmet());
