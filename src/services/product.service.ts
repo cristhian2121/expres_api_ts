@@ -4,80 +4,61 @@ import poolConnection from "../libs/postgres";
 import { Pool } from "pg";
 import { AppDataSource } from "../libs/typeORM";
 import { Products } from "../db/entities/product.entity";
+import { Repository } from "typeorm";
 export class ProductsService {
 
   products: IProduct[] = []
   pool: Pool;
+  productEntity: Repository<Products>
 
   constructor(){
-    this.generate();
     this.pool = poolConnection
     this.pool.on("error", (err) => {
       console.log("Error in connection with pg ", err);
     })
+    this.productEntity = AppDataSource.getRepository(Products)
   }
 
-  generate() {
-    const limit = 10;
-    for (let index = 0; index < limit; index++) {
-      this.products.push({
-        id: index+1,
-        name: "cris",
-        price: 123,
-        image: "wrl",
-        isBlock: true,
-      });
-    }
-  }
-
-  async create(data: IProductDTO) {
-    const newProduct: IProduct = {
-      id: 12,
-      ...data
-    }
-    this.products.push(newProduct);
-    return newProduct;
+  async create(data: IProductDTO): Promise<Products> {
+    const product = await this.productEntity.create(data)
+    return product
   }
 
   async find() {
-    const res = await AppDataSource.manager.find(Products)
+    console.log("entry");
+    const res = await this.productEntity.find()
+    console.log("res", res);
     return res
   }
 
   async findOne(id: number) {
-    const product = this.products.find(item => item.id === id);
+    const product = await this.productEntity.findOneBy({ id }) 
 
     if(!product){
       throw Boom.notFound("Product no found.")
     }
 
-    if(product.isBlock) {
+    if(product.isPublished) {
       throw Boom.conflict('Product is block')
     }
 
     return product
   }
 
-  async update(id: number, changes: IProductDTO) {
-    const index = this.products.findIndex(item => item.id === id);
-    if (index === -1) {
+  async update(id: number, data: IProductDTO) {
+    const res = await this.productEntity.update({id}, data)
+    if (!res.affected) {
       throw Boom.notFound("Product no found.")
     }
-    const product = this.products[index];
-    this.products[index] = {
-      ...product,
-      ...changes
-    };
-    return this.products[index];
+    return res;
   }
 
   async delete(id: number) {
-    const index = this.products.findIndex(item => item.id === id);
-    if (index === -1) {
+    const res = await this.productEntity.delete({ id })
+    if (!res.affected) {
       throw Boom.notFound("Product no found.")
     }
-    this.products.splice(index, 1);
-    return { id };
+    return res
   }
 
 }
