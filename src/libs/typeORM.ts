@@ -11,11 +11,11 @@ export const AppDataSource = new DataSource({
   username: config.dbUser,
   password: config.dbPassword,
   database: config.dbName,
-  synchronize: true,
+  synchronize: false, // I'm using migration so is no necesary it
   logging: false,
   entities: [Products, User],
   // subscribers: [],
-  // migrations: [],
+  migrations: ["./src/db/migrations/*.ts"],
 })
 
 export function turnOnORM() {

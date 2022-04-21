@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "rm -rf build/ && prettier --write source/ && tsc",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "typeorm:cli": "ts-node ./node_modules/typeorm/cli.js",
+    "typeorm:generate": "yarn typeorm:cli migration:generate -d ./src/libs/ormconfigMigration.ts",
+    "typeorm:run": "yarn typeorm:cli migration:run -d ./src/libs/ormconfigMigration.ts"
   },
   "dependencies": {
     "@hapi/boom": "^9.1.4",
