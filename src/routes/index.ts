@@ -1,6 +1,7 @@
 import { Express, Router } from "express"
 import productsRouter from "./product.router"
 import categoryRouter from "./product.router"
+import userRouter from "./user.router"
 
 export function routerApi(app: Express) {
   // v1
@@ -9,6 +10,7 @@ export function routerApi(app: Express) {
 
   routerV1.use('/product', productsRouter)
   routerV1.use('/category', categoryRouter)
+  routerV1.use('/user', userRouter)
 
   // v2
 

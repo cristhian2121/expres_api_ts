@@ -1,7 +1,7 @@
 import { IProductDTO } from "@models/product.model";
 import express from "express"
 import { validatorHandler } from "../middlewares/validator.handler";
-import { createProductSchema, getProductSchema, updateProductSchema } from "../schemas/product.schema";
+import { createProductORM, getProductORM, updateProductORM } from "../orm/product.orm";
 import { ProductsService } from "../services/product.service";
 
 const router = express.Router();
@@ -18,7 +18,7 @@ router.get('/filter', (req, res, next) => {
 });
 
 router.get('/:id',
-  validatorHandler(getProductSchema, "params"),
+  validatorHandler(getProductORM, "params"),
   async (req, res, next) => {
   const { id } = req.params;
   try {
@@ -31,7 +31,7 @@ router.get('/:id',
 });
 
 router.post('/', 
-  validatorHandler(createProductSchema, "body"),
+  validatorHandler(createProductORM, "body"),
   async (req, res) => {
     const body = req.body as IProductDTO;
     const newProduct = await productsSvc.create(body);
@@ -40,8 +40,8 @@ router.post('/',
 );
 
 router.patch('/:id',
-  validatorHandler(getProductSchema, "params"),
-  validatorHandler(updateProductSchema, "body"),
+  validatorHandler(getProductORM, "params"),
+  validatorHandler(updateProductORM, "body"),
   async (req, res) => {
     try {
       const { id } = req.params;

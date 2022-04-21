@@ -4,16 +4,16 @@ const id = Joi.string();
 const name = Joi.string().alphanum().min(3).max(15);
 const price = Joi.number().integer().min(10);
 
-export const createProductSchema = Joi.object({
+export const createProductORM = Joi.object({
   name: name.required(),
   price: price.required(),
 });
 
-export const updateProductSchema = Joi.object({
+export const updateProductORM = Joi.object({
   name: name,
   price: price,
 });
 
-export const getProductSchema = Joi.object({
+export const getProductORM = Joi.object({
   id: id.required(),
 });
