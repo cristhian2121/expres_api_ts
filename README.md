@@ -17,3 +17,11 @@ git push origin --tags :refs/tags/tagName
 
 Git visual
 gitk
+
+### Create migrations
+Where 001 is consecutive of migrations
+yarn run typeorm:generate ./src/db/migrations/001  
+### Run migrations
+npx typeorm-ts-node-commonjs migration:run
+### Revert migration
+typeorm migration:revert
