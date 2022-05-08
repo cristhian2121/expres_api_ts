@@ -23,5 +23,6 @@ Where 001 is consecutive of migrations
 yarn run typeorm:generate ./src/db/migrations/001  
 ### Run migrations
 npx typeorm-ts-node-commonjs migration:run
+yarn run typeorm:run ./src/db/migrations/1650598564387-first_001.ts 
 ### Revert migration
 typeorm migration:revert
